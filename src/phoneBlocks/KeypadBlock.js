@@ -1,65 +1,65 @@
 import {
-  Grid,
   Fab,
   FormControlLabel,
+  Grid,
   Switch,
-  Tooltip
-} from '@material-ui/core';
+  Tooltip,
+} from "@material-ui/core";
 import {
-  Mic,
-  MicOff,
-  Settings,
-  Pause,
   Call,
   CallEnd,
-  Transform,
-  PlayArrow,
-  PhoneForwarded,
+  CallMerge,
   Cancel,
+  Mic,
+  MicOff,
+  Pause,
+  PhoneForwarded,
+  PlayArrow,
+  Settings,
   SwapCalls,
-  CallMerge
-} from '@material-ui/icons';
-import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import PropTypes from 'prop-types';
+  Transform,
+} from "@material-ui/icons";
+import React from "react";
+import { makeStyles } from "@material-ui/styles";
+import PropTypes from "prop-types";
 
 const useStyles = makeStyles((theme) => ({
   root: {
     paddingTop: theme.spacing(3),
-    paddingBottom: theme.spacing(3)
+    paddingBottom: theme.spacing(3),
   },
   fab: {
-    width: '41px',
-    height: '41px',
-    background: '#f4f6f8'
+    width: "41px",
+    height: "41px",
+    background: "#f4f6f8",
   },
   callButton: {
-    color: 'white',
-    background: '#4ada61',
-    '&:hover': {
-      background: '#94f3a4'
-    }
+    color: "white",
+    background: "#4ada61",
+    "&:hover": {
+      background: "#94f3a4",
+    },
   },
   endCallButton: {
-    color: 'white',
-    background: '#fa1941',
-    '&:hover': {
-      background: '#f8939b'
-    }
+    color: "white",
+    background: "#fa1941",
+    "&:hover": {
+      background: "#f8939b",
+    },
   },
   pauseIcon: {
-    color: '#263238'
+    color: "#263238",
   },
   gridRaw: {
-    paddingTop: '27px',
-    display: 'flex',
-    justifyContent: 'space-between'
+    paddingTop: "27px",
+    display: "flex",
+    justifyContent: "space-between",
   },
   gridLastRaw: {
-    paddingTop: '12px',
-    display: 'flex',
-    justifyContent: 'center'
-  }
+    paddingTop: "12px",
+    display: "flex",
+    justifyContent: "center",
+  },
 }));
 
 function KeypadBlock({
@@ -70,8 +70,8 @@ function KeypadBlock({
   handleCall,
   handleEndCall,
   activeChanel,
-  keyVariant = 'default',
-  handleHold
+  keyVariant = "default",
+  handleHold,
 }) {
   const classes = useStyles();
   const {
@@ -85,12 +85,12 @@ function KeypadBlock({
     inAnswerTransfer,
     inConference,
     inTransfer,
-    transferControl
+    transferControl,
   } = activeChanel;
 
   return (
     <div>
-      {keyVariant === 'default' ? (
+      {keyVariant === "default" ? (
         <div>
           <Grid container spacing={0} className={classes.gridRaw}>
             <Grid item xs={3}>
@@ -118,9 +118,9 @@ function KeypadBlock({
               </Grid>
             </Grid>
             <Grid item xs={3}>
-              <Tooltip title={hold ? 'Resume' : 'Hold'} aria-label="add">
+              <Tooltip title={hold ? "Resume" : "Hold"} aria-label="add">
                 <div>
-                  {' '}
+                  {" "}
                   <Fab
                     disabled={!inCall || !inAnswer}
                     className={classes.fab}
@@ -161,7 +161,7 @@ function KeypadBlock({
                     size="small"
                     aria-label="4"
                     onClick={() => {
-                      handleCallAttendedTransfer('transfer', {});
+                      handleCallAttendedTransfer("transfer", {});
                     }}
                   >
                     <Transform />
@@ -169,10 +169,10 @@ function KeypadBlock({
                 </span>
               </Tooltip>
             </Grid>
-            {inAnswerTransfer
-            && !inConference
-            && inTransfer
-            && transferControl ? (
+            {inAnswerTransfer &&
+            !inConference &&
+            inTransfer &&
+            transferControl ? (
               <Grid container spacing={0} className={classes.gridRaw}>
                 <Grid item xs={3}>
                   <Tooltip title="Conference" aria-label="conference">
@@ -183,7 +183,7 @@ function KeypadBlock({
                         size="small"
                         aria-label="4"
                         onClick={() => {
-                          handleCallAttendedTransfer('merge', {});
+                          handleCallAttendedTransfer("merge", {});
                         }}
                       >
                         <CallMerge />
@@ -200,7 +200,7 @@ function KeypadBlock({
                         size="small"
                         aria-label="4"
                         onClick={() => {
-                          handleCallAttendedTransfer('swap', {});
+                          handleCallAttendedTransfer("swap", {});
                         }}
                       >
                         <SwapCalls />
@@ -217,7 +217,7 @@ function KeypadBlock({
                         size="small"
                         aria-label="4"
                         onClick={() => {
-                          handleCallAttendedTransfer('finish', {});
+                          handleCallAttendedTransfer("finish", {});
                         }}
                       >
                         <PhoneForwarded />
@@ -234,7 +234,7 @@ function KeypadBlock({
                         size="small"
                         aria-label="4"
                         onClick={() => {
-                          handleCallAttendedTransfer('cancel', {});
+                          handleCallAttendedTransfer("cancel", {});
                         }}
                       >
                         <Cancel />
@@ -243,9 +243,9 @@ function KeypadBlock({
                   </Tooltip>
                 </Grid>
               </Grid>
-              ) : (
-                <div />
-              )}
+            ) : (
+              <div />
+            )}
           </Grid>
 
           <Grid container spacing={0} className={classes.gridLastRaw}>
@@ -438,7 +438,6 @@ KeypadBlock.propTypes = {
   handleEndCall: PropTypes.any,
   activeChanel: PropTypes.any,
   keyVariant: PropTypes.any,
-  handleHold: PropTypes.any
-
+  handleHold: PropTypes.any,
 };
 export default KeypadBlock;

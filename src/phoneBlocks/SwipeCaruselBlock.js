@@ -1,22 +1,12 @@
-import React from 'react';
-import SwipeableViews from 'react-swipeable-views';
+import React from "react";
+import SwipeableViews from "react-swipeable-views";
 
-import {
-  Typography,
-  Box,
-  AppBar,
-  Tabs,
-  Tab,
-  makeStyles,
-
-
-} from '@material-ui/core';
-import PropTypes from 'prop-types';
+import { AppBar, Box, Tab, Tabs, Typography } from "@material-ui/core";
+import { makeStyles } from "@material-ui/styles";
+import PropTypes from "prop-types";
 
 function TabPanel(props) {
-  const {
-    children, value, index, ...other
-  } = props;
+  const { children, value, index, ...other } = props;
 
   return (
     <Typography
@@ -35,80 +25,80 @@ function TabPanel(props) {
 function a11yProps(index) {
   return {
     id: `full-width-tab-${index}`,
-    'aria-controls': `full-width-tabpanel-${index}`
+    "aria-controls": `full-width-tabpanel-${index}`,
   };
 }
 
 const useStyles = makeStyles(() => {
   return {
     tabs: {
-      textTransform: 'none',
-      minWidth: '25%',
-      marginRight: 'auto',
+      textTransform: "none",
+      minWidth: "25%",
+      marginRight: "auto",
       // marginRight: theme.spacing(4),
       fontFamily: [
-        '-apple-system',
-        'BlinkMacSystemFont',
+        "-apple-system",
+        "BlinkMacSystemFont",
         '"Segoe UI"',
-        'Roboto',
+        "Roboto",
         '"Helvetica Neue"',
-        'Arial',
-        'sans-serif',
+        "Arial",
+        "sans-serif",
         '"Apple Color Emoji"',
         '"Segoe UI Emoji"',
-        '"Segoe UI Symbol"'
-      ].join(','),
-      '&:hover': {
-        color: '#40a9ff',
-        opacity: 1
+        '"Segoe UI Symbol"',
+      ].join(","),
+      "&:hover": {
+        color: "#40a9ff",
+        opacity: 1,
       },
-      '&:focus': {
-        color: '#40a9ff'
-      }
+      "&:focus": {
+        color: "#40a9ff",
+      },
     },
     tabPanelHold: {
-      backgroundColor: '#ff8686',
+      backgroundColor: "#ff8686",
     },
     tabPanelActive: {
-      backgroundColor: '#8bff87',
+      backgroundColor: "#8bff87",
     },
     text: {
-      color: 'black',
-    }
-
+      color: "black",
+    },
   };
 });
 
 function SwipeCaruselBlock({
-  localStatePhone, activeChannel, setActiveChannel
+  localStatePhone,
+  activeChannel,
+  setActiveChannel,
 }) {
   const classes = useStyles();
-  const [duration, setDuration] = React.useState(
-    [{
-      duration: 0,
-    },
+  const [duration, setDuration] = React.useState([
     {
       duration: 0,
     },
     {
       duration: 0,
-    }]
-  );
-  const [intervals, setintervals] = React.useState(
-    [{
+    },
+    {
+      duration: 0,
+    },
+  ]);
+  const [intervals, setintervals] = React.useState([
+    {
       intrId: 0,
-      active: false
+      active: false,
     },
     {
       intrId: 0,
-      active: false
+      active: false,
     },
     {
       intrId: 0,
-      active: false
-    }
-    ]
-  );
+      active: false,
+    },
+  ]);
   const { displayCalls } = localStatePhone;
   const handleTabChangeIndex = (index) => {
     setActiveChannel(index);
@@ -117,26 +107,37 @@ function SwipeCaruselBlock({
     setActiveChannel(newValue);
   };
 
-
   displayCalls.map((displayCall, key) => {
     // if Call just started then increment duration every one second
-    if (displayCall.inCall === true
-      && displayCall.inAnswer === true && intervals[key].active === false) {
+    if (
+      displayCall.inCall === true &&
+      displayCall.inAnswer === true &&
+      intervals[key].active === false
+    ) {
       const intr = setInterval(() => {
         setDuration((durations) => ({
           ...durations,
-          [key]: { duration: durations[key].duration + 1 }
+          [key]: { duration: durations[key].duration + 1 },
         }));
       }, 1000);
 
-      setintervals((inter) => ({ ...inter, [key]: { intrId: intr, active: true } }));
+      setintervals((inter) => ({
+        ...inter,
+        [key]: { intrId: intr, active: true },
+      }));
     }
     // if Call ended  then stop  increment duration every one second
-    if (displayCall.inCall === false
-      && displayCall.inAnswer === false && intervals[key].active === true) {
+    if (
+      displayCall.inCall === false &&
+      displayCall.inAnswer === false &&
+      intervals[key].active === true
+    ) {
       clearInterval(intervals[key].intrId);
       setDuration((durations) => ({ ...durations, [key]: { duration: 0 } }));
-      setintervals((inter) => ({ ...inter, [key]: { intrId: 0, active: false } }));
+      setintervals((inter) => ({
+        ...inter,
+        [key]: { intrId: 0, active: false },
+      }));
     }
     return true;
   });
@@ -162,11 +163,12 @@ function SwipeCaruselBlock({
         index={activeChannel}
         onChangeIndex={handleTabChangeIndex}
       >
-
         {displayCalls.map((displayCall, key) => (
           <TabPanel
             key={`${displayCall.id}-TabPanel`}
-            className={displayCall.hold ? classes.tabPanelHold : classes.tabPanelActive}
+            className={
+              displayCall.hold ? classes.tabPanelHold : classes.tabPanelActive
+            }
             value={key}
             index={displayCall.id}
           >
@@ -177,11 +179,7 @@ function SwipeCaruselBlock({
                     return (
                       // Show hold Call info
                       <div className={classes.text}>
-                        <Typography>
-                          Status:
-                          {' '}
-                          {displayCall.callInfo}
-                        </Typography>
+                        <Typography>Status: {displayCall.callInfo}</Typography>
                         <Typography>
                           Duration:
                           {duration[key].duration}
@@ -201,11 +199,7 @@ function SwipeCaruselBlock({
                     return (
                       // Show In Transfer info
                       <div className={classes.text}>
-                        <Typography>
-                          Status:
-                          {' '}
-                          {displayCall.callInfo}
-                        </Typography>
+                        <Typography>Status: {displayCall.callInfo}</Typography>
                         <Typography>
                           Side:
                           {displayCall.direction}
@@ -215,26 +209,20 @@ function SwipeCaruselBlock({
                           {duration[key].duration}
                         </Typography>
                         <Typography>
-                          Number:
-                          {' '}
-                          {displayCall.callNumber}
+                          Number: {displayCall.callNumber}
                         </Typography>
                         <Typography>
-                          Transfer to :
-                          {' '}
-                          {displayCall.transferNumber}
+                          Transfer to : {displayCall.transferNumber}
                         </Typography>
                         <Typography>
-                          {displayCall.attendedTransferOnline.length > 1
-                          && !displayCall.inConference ? (
+                          {displayCall.attendedTransferOnline.length > 1 &&
+                          !displayCall.inConference ? (
                             <span>
-                              { 'Talking with :' }
-                              {' '}
+                              {"Talking with :"}{" "}
                               {displayCall.attendedTransferOnline}
                             </span>
-                            ) : null}
+                          ) : null}
                         </Typography>
-
                       </div>
                     );
                   }
@@ -258,7 +246,6 @@ function SwipeCaruselBlock({
                         Number:
                         {displayCall.callNumber}
                       </Typography>
-
                     </div>
                   );
                 }
@@ -266,22 +253,9 @@ function SwipeCaruselBlock({
                 return (
                   // Show Calling info
                   <div className={classes.text}>
-                    <Typography>
-                      Status:
-                      {' '}
-                      {displayCall.callInfo}
-                    </Typography>
-                    <Typography>
-                      Side:
-                      {' '}
-                      {displayCall.direction}
-                    </Typography>
-                    <Typography>
-                      Number:
-                      {' '}
-                      {displayCall.callNumber}
-                    </Typography>
-
+                    <Typography>Status: {displayCall.callInfo}</Typography>
+                    <Typography>Side: {displayCall.direction}</Typography>
+                    <Typography>Number: {displayCall.callNumber}</Typography>
                   </div>
                 );
               }
@@ -290,21 +264,13 @@ function SwipeCaruselBlock({
                 // Show Ready info
                 <div className={classes.text}>
                   <Typography>
-                    Status:
-                    {' '}
-                    {displayCall.callInfo}
-                    {' '}
-                    {displayCall.info}
+                    Status: {displayCall.callInfo} {displayCall.info}
                   </Typography>
-
                 </div>
               );
             }}
-
           </TabPanel>
         ))}
-
-
       </SwipeableViews>
     </div>
   );
@@ -313,8 +279,6 @@ function SwipeCaruselBlock({
 SwipeCaruselBlock.propTypes = {
   localStatePhone: PropTypes.any,
   activeChannel: PropTypes.any,
-  setActiveChannel: PropTypes.any
-
-
+  setActiveChannel: PropTypes.any,
 };
 export default SwipeCaruselBlock;

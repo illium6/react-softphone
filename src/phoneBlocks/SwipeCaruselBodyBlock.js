@@ -1,31 +1,30 @@
-import React from 'react';
+import React from "react";
 import {
   AppBar,
-  Tabs,
-  Divider,
-  Tab,
-  makeStyles,
-  ListSubheader,
-  List,
   Box,
-  Typography
-} from '@material-ui/core';
+  Divider,
+  List,
+  ListSubheader,
+  Tab,
+  Tabs,
+  Typography,
+} from "@material-ui/core";
+
+import { makeStyles } from "@material-ui/styles";
 
 import {
-  Settings as SettingsIcon,
-  History as HistoryIcon,
   CallMade as CallMadeIcon,
-  CallReceived as CallReceivedIcon
-} from '@material-ui/icons';
+  CallReceived as CallReceivedIcon,
+  History as HistoryIcon,
+  Settings as SettingsIcon,
+} from "@material-ui/icons";
 
-import { DateTime } from 'luxon';
-import PropTypes from 'prop-types';
-import SettingsBlock from './SettingsBlock';
+import { DateTime } from "luxon";
+import PropTypes from "prop-types";
+import SettingsBlock from "./SettingsBlock";
 
 function TabPanel(props) {
-  const {
-    children, value, index, ...other
-  } = props;
+  const { children, value, index, ...other } = props;
 
   return (
     <Typography
@@ -44,50 +43,50 @@ function TabPanel(props) {
 function a11yProps(index) {
   return {
     id: `full-width-tab-${index}`,
-    'aria-controls': `full-width-tabpanel-${index}`
+    "aria-controls": `full-width-tabpanel-${index}`,
   };
 }
 const useStyles = makeStyles((theme) => ({
   tabs: {
-    textTransform: 'none',
-    minWidth: '25%',
-    marginRight: 'auto',
+    textTransform: "none",
+    minWidth: "25%",
+    marginRight: "auto",
     // marginRight: theme.spacing(4),
     fontFamily: [
-      '-apple-system',
-      'BlinkMacSystemFont',
+      "-apple-system",
+      "BlinkMacSystemFont",
       '"Segoe UI"',
-      'Roboto',
+      "Roboto",
       '"Helvetica Neue"',
-      'Arial',
-      'sans-serif',
+      "Arial",
+      "sans-serif",
       '"Apple Color Emoji"',
       '"Segoe UI Emoji"',
-      '"Segoe UI Symbol"'
-    ].join(','),
-    '&:hover': {
-      color: '#40a9ff',
-      opacity: 1
+      '"Segoe UI Symbol"',
+    ].join(","),
+    "&:hover": {
+      color: "#40a9ff",
+      opacity: 1,
     },
-    '&:focus': {
-      color: '#40a9ff'
-    }
+    "&:focus": {
+      color: "#40a9ff",
+    },
   },
   root: {
-    width: '100%',
+    width: "100%",
     maxWidth: 360,
     backgroundColor: theme.palette.background.paper,
-    position: 'relative',
-    overflow: 'auto',
-    maxHeight: 300
+    position: "relative",
+    overflow: "auto",
+    maxHeight: 300,
   },
   listSection: {
-    backgroundColor: 'inherit'
+    backgroundColor: "inherit",
   },
   ul: {
-    backgroundColor: 'inherit',
-    padding: 0
-  }
+    backgroundColor: "inherit",
+    padding: 0,
+  },
 }));
 
 function SwipeCaruselBodyBlock({
@@ -97,7 +96,7 @@ function SwipeCaruselBodyBlock({
   handleSettingsSlider,
   handleConnectOnStart,
   handleNotifications,
-  timelocale
+  timelocale,
 }) {
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
@@ -144,27 +143,24 @@ function SwipeCaruselBodyBlock({
       </TabPanel>
       <TabPanel value={value} index={1}>
         {calls.length === 0 ? (
-          'No Calls'
+          "No Calls"
         ) : (
           <List className={classes.root} subheader={<li />}>
-            {calls.map(({
-              sessionId, direction, number, time, status
-            }) => (
+            {calls.map(({ sessionId, direction, number, time, status }) => (
               <li key={`section-${sessionId}`} className={classes.listSection}>
                 <ul className={classes.ul}>
                   <ListSubheader
                     style={{
-                      color: status === 'missed' ? 'red' : 'green',
-                      fontSize: '0.675rem',
-                      lineHeight: '20px'
+                      color: status === "missed" ? "red" : "green",
+                      fontSize: "0.675rem",
+                      lineHeight: "20px",
                     }}
                   >
-                    {`${number}`}
-                    {' '}
-                    {direction === 'outgoing' ? (
-                      <CallMadeIcon style={{ fontSize: '0.675rem' }} />
+                    {`${number}`}{" "}
+                    {direction === "outgoing" ? (
+                      <CallMadeIcon style={{ fontSize: "0.675rem" }} />
                     ) : (
-                      <CallReceivedIcon style={{ fontSize: '0.675rem' }} />
+                      <CallReceivedIcon style={{ fontSize: "0.675rem" }} />
                     )}
                     <br />
                     {DateTime.fromISO(time.toISOString())
@@ -182,7 +178,6 @@ function SwipeCaruselBodyBlock({
   );
 }
 
-
 SwipeCaruselBodyBlock.propTypes = {
   calls: PropTypes.any,
   localStatePhone: PropTypes.any,
@@ -191,12 +186,9 @@ SwipeCaruselBodyBlock.propTypes = {
   handleConnectOnStart: PropTypes.any,
   handleNotifications: PropTypes.any,
   callVolume: PropTypes.any,
-  timelocale: PropTypes.any
-
+  timelocale: PropTypes.any,
 };
 TabPanel.propTypes = {
   props: PropTypes.any,
-
-
 };
 export default SwipeCaruselBodyBlock;

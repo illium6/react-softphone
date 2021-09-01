@@ -3,10 +3,10 @@ import {
   Divider,
   Drawer,
   IconButton,
-  makeStyles,
   Snackbar,
   TextField,
 } from "@material-ui/core";
+import { makeStyles } from "@material-ui/styles";
 import {
   Call as CallIcon,
   ChevronLeft as ChevronLeftIcon,
@@ -700,6 +700,8 @@ function SoftPhone({
   const handleSettingsButton = () => {
     flowRoute.tmpEvent();
   };
+
+  // TODO: оно сломалось чуть более чем полностью
 
   useEffect(() => {
     flowRoute.config = config;
