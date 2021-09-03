@@ -155,7 +155,7 @@ function SwipeCaruselBlock({
         >
           <Tab className={classes.tabs} label="CH 1" {...a11yProps(0)} />
           <Tab className={classes.tabs} label="CH 2" {...a11yProps(1)} />
-          <Tab className={classes.tabs} label="Ch 3" {...a11yProps(2)} />
+          <Tab className={classes.tabs} label="CH 3" {...a11yProps(2)} />
         </Tabs>
       </AppBar>
       <SwipeableViews
@@ -172,103 +172,88 @@ function SwipeCaruselBlock({
             value={key}
             index={displayCall.id}
           >
-            {() => {
-              if (displayCall.inCall === true) {
-                if (displayCall.inAnswer === true) {
-                  if (displayCall.hold === true) {
-                    return (
-                      // Show hold Call info
-                      <div className={classes.text}>
-                        <Typography>Status: {displayCall.callInfo}</Typography>
-                        <Typography>
-                          Duration:
-                          {duration[key].duration}
-                        </Typography>
-                        <Typography>
-                          Number:
-                          {displayCall.callNumber}
-                        </Typography>
-                        <Typography>
-                          Side:
-                          {displayCall.direction}
-                        </Typography>
-                      </div>
-                    );
-                  }
-                  if (displayCall.inTransfer === true) {
-                    return (
-                      // Show In Transfer info
-                      <div className={classes.text}>
-                        <Typography>Status: {displayCall.callInfo}</Typography>
-                        <Typography>
-                          Side:
-                          {displayCall.direction}
-                        </Typography>
-                        <Typography>
-                          Duration:
-                          {duration[key].duration}
-                        </Typography>
-                        <Typography>
-                          Number: {displayCall.callNumber}
-                        </Typography>
-                        <Typography>
-                          Transfer to : {displayCall.transferNumber}
-                        </Typography>
-                        <Typography>
-                          {displayCall.attendedTransferOnline.length > 1 &&
-                          !displayCall.inConference ? (
-                            <span>
-                              {"Talking with :"}{" "}
-                              {displayCall.attendedTransferOnline}
-                            </span>
-                          ) : null}
-                        </Typography>
-                      </div>
-                    );
-                  }
-
-                  return (
-                    // Show In Call info
-                    <div className={classes.text}>
-                      <Typography>
-                        Status:
-                        {displayCall.callInfo}
-                      </Typography>
-                      <Typography>
-                        Side:
-                        {displayCall.direction}
-                      </Typography>
-                      <Typography>
-                        Duration:
-                        {duration[key].duration}
-                      </Typography>
-                      <Typography>
-                        Number:
-                        {displayCall.callNumber}
-                      </Typography>
-                    </div>
-                  );
-                }
-
-                return (
-                  // Show Calling info
+            {displayCall.inCall ? (
+              displayCall.inAnswer ? (
+                displayCall.hold ? (
+                  // Show hold Call info
                   <div className={classes.text}>
-                    <Typography>Status: {displayCall.callInfo}</Typography>
-                    <Typography>Side: {displayCall.direction}</Typography>
-                    <Typography>Number: {displayCall.callNumber}</Typography>
+                    <Typography>Статус: {displayCall.callInfo}</Typography>
+                    <Typography>
+                      Длительность:
+                      {duration[key].duration}
+                    </Typography>
+                    <Typography>
+                      Номер:
+                      {displayCall.callNumber}
+                    </Typography>
+                    <Typography>
+                      Тип звонка:
+                      {displayCall.direction}
+                    </Typography>
                   </div>
-                );
-              }
-
-              return (
-                // Show Ready info
+                ) : displayCall.inTransfer ? (
+                  // Show In Transfer info
+                  <div className={classes.text}>
+                    <Typography>Статус: {displayCall.callInfo}</Typography>
+                    <Typography>
+                      Тип звонка:
+                      {displayCall.direction}
+                    </Typography>
+                    <Typography>
+                      Длительность:
+                      {duration[key].duration}
+                    </Typography>
+                    <Typography>Номер: {displayCall.callNumber}</Typography>
+                    <Typography>
+                      Перевод к : {displayCall.transferNumber}
+                    </Typography>
+                    <Typography>
+                      {displayCall.attendedTransferOnline.length > 1 &&
+                      !displayCall.inConference ? (
+                        <span>
+                          {"Talking with :"}{" "}
+                          {displayCall.attendedTransferOnline}
+                        </span>
+                      ) : null}
+                    </Typography>
+                  </div>
+                ) : (
+                  // Show In Call info
+                  <div className={classes.text}>
+                    <Typography>
+                      Статус:
+                      {displayCall.callInfo}
+                    </Typography>
+                    <Typography>
+                      Тип звонка:
+                      {displayCall.direction}
+                    </Typography>
+                    <Typography>
+                      Длительность:
+                      {duration[key].duration}
+                    </Typography>
+                    <Typography>
+                      Номер:
+                      {displayCall.callNumber}
+                    </Typography>
+                  </div>
+                )
+              ) : (
+                // Show Calling info
                 <div className={classes.text}>
-                  <Typography>
-                    Status: {displayCall.callInfo} {displayCall.info}
-                  </Typography>
+                  <Typography>Статус: {displayCall.callInfo}</Typography>
+                  <Typography>Тип звонка: {displayCall.direction}</Typography>
+                  <Typography>Номер: {displayCall.callNumber}</Typography>
                 </div>
-              );
-            }}
+              )
+            ) : (
+              // Show Ready info
+              <div className={classes.text}>
+                <Typography>
+                  Статус: {displayCall.callInfo} {displayCall.info}
+                </Typography>
+              </div>
+            )}
           </TabPanel>
         ))}
       </SwipeableViews>

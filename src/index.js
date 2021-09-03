@@ -1,17 +1,6 @@
 import React, { createRef, useEffect, useState } from "react";
-import {
-  Divider,
-  Drawer,
-  IconButton,
-  Snackbar,
-  TextField,
-} from "@material-ui/core";
+import { Divider, Drawer, Snackbar, TextField } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
-import {
-  Call as CallIcon,
-  ChevronLeft as ChevronLeftIcon,
-  ChevronRight as ChevronRightIcon,
-} from "@material-ui/icons";
 import _ from "lodash";
 import MuiAlert from "@material-ui/lab/Alert";
 import PropTypes from "prop-types";
@@ -28,6 +17,73 @@ const flowRoute = new CallsFlowControl();
 const player = createRef();
 const ringer = createRef();
 
+const useStyles = makeStyles((theme) => ({
+  root: {
+    paddingTop: theme.spacing(3),
+    paddingBottom: theme.spacing(3),
+    width: 0,
+  },
+  results: {
+    marginTop: theme.spacing(3),
+  },
+  phone: {
+    maxWidth: "256px",
+    padding: "27px",
+  },
+  gridSettings: {
+    paddingTop: "26px",
+    display: "flex",
+    justifyContent: "space-between",
+    flexWrap: "nowrap",
+    maxWidth: "202px",
+  },
+  connected: {
+    color: "green",
+  },
+  disconnected: {
+    color: "red",
+  },
+
+  textform: {
+    "& > *": {
+      textAlign: "right",
+      width: "100%",
+    },
+    ".MuiInputBase-input": {
+      textAlign: "right",
+    },
+  },
+
+  phoneButton: {
+    color: "white",
+    backgroundColor: "#3949ab",
+    position: "fixed",
+    right: "27px",
+    bottom: "27px",
+    "&:hover": {
+      background: "#94a3fc",
+    },
+  },
+  drawerPaper: {
+    width: 280,
+  },
+  drawer: {
+    [theme.breakpoints.up("sm")]: {
+      width: 280,
+      flexShrink: 0,
+    },
+  },
+  drawerHeader: {
+    marginTop: 64,
+    minHeight: 30,
+    display: "flex",
+    alignItems: "center",
+    padding: theme.spacing(0, 1),
+    ...theme.mixins.toolbar,
+    justifyContent: "flex-start",
+  },
+}));
+
 function SoftPhone({
   callVolume,
   ringVolume,
@@ -39,19 +95,20 @@ function SoftPhone({
   connectOnStart = true,
   config,
   timelocale = "UTC",
+  ...props
 }) {
   const defaultSoftPhoneState = {
     displayCalls: [
       {
         id: 0,
-        info: "Ch 1",
+        info: "CH 1",
         hold: false,
         muted: 0,
         autoMute: 0,
         inCall: false,
         inAnswer: false,
         inTransfer: false,
-        callInfo: "Ready",
+        callInfo: "Готов",
         inAnswerTransfer: false,
         allowTransfer: true,
         transferControl: false,
@@ -66,7 +123,7 @@ function SoftPhone({
       },
       {
         id: 1,
-        info: "Ch 2",
+        info: "CH 2",
         hold: false,
         muted: 0,
         autoMute: 0,
@@ -75,7 +132,7 @@ function SoftPhone({
         inAnswerTransfer: false,
         inConference: false,
         inTransfer: false,
-        callInfo: "Ready",
+        callInfo: "Готов",
         allowTransfer: true,
         transferControl: false,
         allowAttendedTransfer: true,
@@ -88,14 +145,14 @@ function SoftPhone({
       },
       {
         id: 2,
-        info: "Ch 3",
+        info: "CH 3",
         hold: false,
         muted: 0,
         autoMute: 0,
         inCall: false,
         inConference: false,
         inAnswer: false,
-        callInfo: "Ready",
+        callInfo: "Готов",
         inTransfer: false,
         inAnswerTransfer: false,
         Transfer: false,
@@ -120,74 +177,8 @@ function SoftPhone({
     ringVolume,
   };
 
-  const useStyles = makeStyles((theme) => ({
-    root: {
-      paddingTop: theme.spacing(3),
-      paddingBottom: theme.spacing(3),
-    },
-    results: {
-      marginTop: theme.spacing(3),
-    },
-    phone: {
-      maxWidth: "256px",
-      padding: "27px",
-    },
-    gridSettings: {
-      paddingTop: "26px",
-      display: "flex",
-      justifyContent: "space-between",
-      flexWrap: "nowrap",
-      maxWidth: "202px",
-    },
-    connected: {
-      color: "green",
-    },
-    disconnected: {
-      color: "red",
-    },
-
-    textform: {
-      "& > *": {
-        textAlign: "right",
-        width: "100%",
-      },
-      ".MuiInputBase-input": {
-        textAlign: "right",
-      },
-    },
-
-    phoneButton: {
-      color: "white",
-      backgroundColor: "#3949ab",
-      position: "fixed",
-      right: "27px",
-      bottom: "27px",
-      "&:hover": {
-        background: "#94a3fc",
-      },
-    },
-    drawerPaper: {
-      width: 280,
-    },
-    drawer: {
-      [theme.breakpoints.up("sm")]: {
-        width: 280,
-        flexShrink: 0,
-      },
-    },
-    drawerHeader: {
-      marginTop: 64,
-      minHeight: 30,
-      display: "flex",
-      alignItems: "center",
-      padding: theme.spacing(0, 1),
-      ...theme.mixins.toolbar,
-      justifyContent: "flex-start",
-    },
-  }));
-
   const classes = useStyles();
-  const [drawerOpen, drawerSetOpen] = useState(false);
+  const [drawerOpen, drawerSetOpen] = useState(props.phoneState);
   const [dialState, setdialState] = useState("");
   const [activeChannel, setActiveChannel] = useState(0);
   const [localStatePhone, setLocalStatePhone] = useState(defaultSoftPhoneState);
@@ -196,6 +187,7 @@ function SoftPhone({
     message: "",
   });
   const [calls, setCalls] = React.useState([]);
+
   const notify = (message) => {
     setNotificationState((notification) => ({
       ...notification,
@@ -204,16 +196,18 @@ function SoftPhone({
     }));
   };
   Notification.requestPermission();
+
   const handleClose = (event, reason) => {
     if (reason === "clickaway") {
       return;
     }
-
     setNotificationState((notification) => ({ ...notification, open: false }));
   };
+
   function Alert(props) {
     return <MuiAlert elevation={6} variant="filled" {...props} />;
   }
+
   flowRoute.activeChanel = localStatePhone.displayCalls[activeChannel];
   flowRoute.connectedPhone = localStatePhone.connectedPhone;
   flowRoute.engineEvent = (event, payload) => {
@@ -538,15 +532,15 @@ function SoftPhone({
 
     return true;
   };
-  const toggleDrawer = (openDrawer) => (event) => {
-    if (
-      event.type === "keydown" &&
-      (event.key === "Tab" || event.key === "Shift")
-    ) {
-      return;
-    }
-    drawerSetOpen(openDrawer);
-  };
+  // const toggleDrawer = (openDrawer) => (event) => {
+  //   if (
+  //     event.type === "keydown" &&
+  //     (event.key === "Tab" || event.key === "Shift")
+  //   ) {
+  //     return;
+  //   }
+  //   drawerSetOpen(openDrawer);
+  // };
   const handleDialStateChange = (event) => {
     event.persist();
     setdialState(event.target.value);
@@ -701,8 +695,6 @@ function SoftPhone({
     flowRoute.tmpEvent();
   };
 
-  // TODO: оно сломалось чуть более чем полностью
-
   useEffect(() => {
     flowRoute.config = config;
     flowRoute.init();
@@ -722,22 +714,13 @@ function SoftPhone({
       flowRoute.ringer = ringer;
     } catch (e) {}
   }, []);
-  return (
-    <Page className={classes.root} title="Phone">
-      {/* Phone Button */}
-      <label htmlFor="icon-button-file">
-        <IconButton
-          className={classes.phoneButton}
-          color="primary"
-          aria-label="call picture"
-          component="span"
-          variant="contained"
-          onClick={toggleDrawer(true)}
-        >
-          <CallIcon />
-        </IconButton>
-      </label>
 
+  useEffect(() => {
+    drawerSetOpen(props.phoneState);
+  }, [props.phoneState]);
+
+  return (
+    <Page className={classes.root} title={document.title}>
       <Drawer
         className={classes.drawer}
         classes={{
@@ -747,16 +730,6 @@ function SoftPhone({
         open={drawerOpen}
         variant="persistent"
       >
-        {/* Hide Phone Button */}
-        <div style={{ minHeight: 30 }} className={classes.drawerHeader}>
-          <IconButton onClick={toggleDrawer(false)}>
-            {classes.direction === "ltr" ? (
-              <ChevronLeftIcon />
-            ) : (
-              <ChevronRightIcon />
-            )}
-          </IconButton>
-        </div>
         <Snackbar
           open={notificationState.open}
           autoHideDuration={3000}
@@ -790,7 +763,7 @@ function SoftPhone({
             value={dialState}
             style={{ textAlign: "right" }}
             id="standard-basic"
-            label="Number"
+            label="Номер"
             fullWidth
             onChange={handleDialStateChange}
           />

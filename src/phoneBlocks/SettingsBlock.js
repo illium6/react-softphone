@@ -104,7 +104,7 @@ function SettingsBlock({
                   onChange={handleNotifications}
                 />
               }
-              label="Notifications"
+              label="Уведомления"
               labelPlacement="start"
             />
             <FormControlLabel
@@ -116,7 +116,7 @@ function SettingsBlock({
                   onChange={handleConnectOnStart}
                 />
               }
-              label="Auto Connect"
+              label="Автоподключение"
               labelPlacement="start"
             />
 
@@ -130,7 +130,7 @@ function SettingsBlock({
                   onChange={handleConnectPhone}
                 />
               }
-              label={connectedPhone ? "Disconnect" : "Connect"}
+              label={connectedPhone ? "Отключиться" : "Подключиться"}
               labelPlacement="start"
             />
             {connectingPhone ? <CircularProgress size={25} /> : ""}

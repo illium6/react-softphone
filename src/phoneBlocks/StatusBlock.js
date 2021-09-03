@@ -26,27 +26,27 @@ function StatusBlock({ connectingPhone, connectedPhone }) {
       <Grid container spacing={5}>
         <Grid item xs={5}>
           <Typography id="continuous-slider" gutterBottom>
-            STATUS
+            СТАТУС
           </Typography>
         </Grid>
         <Grid item xs={3}>
           {!connectingPhone ? (
             connectedPhone ? (
               <Label className={classes.online} color="primary">
-                ONLINE
+                ОНЛАЙН
               </Label>
             ) : (
               <Label className={classes.offline} color="primary">
-                OFFLINE
+                ОФФЛАЙН
               </Label>
             )
           ) : !connectedPhone ? (
             <Label className={classes.online} color="primary">
-              CONNECTING
+              ПОДКЛЮЧЕНИЕ
             </Label>
           ) : (
             <Label className={classes.offline} color="primary">
-              DISCONNECTING
+              ОТКЛЮЧЕНИЕ
             </Label>
           )}
         </Grid>

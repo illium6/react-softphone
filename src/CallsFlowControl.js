@@ -1,11 +1,11 @@
-import { UA, debug } from 'jssip';
-import _ from 'lodash';
+import { debug, UA } from "jssip";
+import _ from "lodash";
 
 function CallsFlowControl() {
   this.onUserAgentAction = () => {};
 
   this.notify = (message) => {
-    this.onCallActionConnection('notify', message);
+    this.onCallActionConnection("notify", message);
   };
   this.tmpEvent = () => {
     console.log(this.activeCall);
@@ -18,11 +18,11 @@ function CallsFlowControl() {
     if (this.micMuted && this.activeCall) {
       this.activeCall.unmute();
       this.micMuted = false;
-      this.onCallActionConnection('unmute', this.activeCall.id);
+      this.onCallActionConnection("unmute", this.activeCall.id);
     } else if (!this.micMuted && this.activeCall) {
       this.micMuted = true;
       this.activeCall.mute();
-      this.onCallActionConnection('mute', this.activeCall.id);
+      this.onCallActionConnection("mute", this.activeCall.id);
     }
   };
   this.hold = (sessionId) => {
@@ -41,7 +41,7 @@ function CallsFlowControl() {
         toUnhold.unhold();
       }
     } else {
-      console.log('Please exit from all active calls to unhold');
+      console.log("Please exit from all active calls to unhold");
     }
   };
   this.micMuted = false;
@@ -79,7 +79,7 @@ function CallsFlowControl() {
     _.remove(this.holdCallsQueue, (calls) => calls.id === callId);
   };
   this.connectAudio = () => {
-    this.activeCall.connection.addEventListener('addstream', (event) => {
+    this.activeCall.connection.addEventListener("addstream", (event) => {
       this.player.current.srcObject = event.stream;
     });
   };
@@ -90,43 +90,43 @@ function CallsFlowControl() {
     // console.log('callid: ', callId);
 
     switch (type) {
-      case 'terminated':
+      case "terminated":
         //  this.endCall(data, cause);
         break;
-      case 'accepted':
+      case "accepted":
         // this.startCall(data);
         break;
-      case 'reinvite':
-        this.onCallActionConnection('reinvite', callId, data);
+      case "reinvite":
+        this.onCallActionConnection("reinvite", callId, data);
         break;
-      case 'hold':
-        this.onCallActionConnection('hold', callId);
+      case "hold":
+        this.onCallActionConnection("hold", callId);
         this.addCallToHoldQueue(callId);
         this.removeCallFromActiveCall(callId);
         break;
-      case 'unhold':
-        this.onCallActionConnection('unhold', callId);
+      case "unhold":
+        this.onCallActionConnection("unhold", callId);
         this.activeCall = _.find(this.holdCallsQueue, { id: callId });
         this.removeCallFromHoldQueue(callId);
         break;
-      case 'dtmf':
+      case "dtmf":
         break;
-      case 'muted':
-        this.onCallActionConnection('muted', callId);
+      case "muted":
+        this.onCallActionConnection("muted", callId);
         break;
-      case 'unmuted':
+      case "unmuted":
         break;
-      case 'confirmed':
+      case "confirmed":
         if (!this.activeCall) {
           this.activeCall = _.find(this.callsQueue, { id: callId });
         }
         this.removeCallFromQueue(callId);
-        this.onCallActionConnection('callAccepted', callId, this.activeCall);
+        this.onCallActionConnection("callAccepted", callId, this.activeCall);
         break;
-      case 'connecting':
+      case "connecting":
         break;
-      case 'ended':
-        this.onCallActionConnection('callEnded', callId);
+      case "ended":
+        this.onCallActionConnection("callEnded", callId);
         this.removeCallFromQueue(callId);
         this.removeCallFromActiveCall(callId);
         this.removeCallFromHoldQueue(callId);
@@ -134,8 +134,8 @@ function CallsFlowControl() {
           this.stopRing();
         }
         break;
-      case 'failed':
-        this.onCallActionConnection('callEnded', callId);
+      case "failed":
+        this.onCallActionConnection("callEnded", callId);
         this.removeCallFromQueue(callId);
         this.removeCallFromActiveCall(callId);
         if (this.callsQueue.length === 0) {
@@ -149,40 +149,40 @@ function CallsFlowControl() {
 
   this.handleNewRTCSession = (rtcPayload) => {
     const { session: call } = rtcPayload;
-    if (call.direction === 'incoming') {
+    if (call.direction === "incoming") {
       this.callsQueue.push(call);
-      this.onCallActionConnection('incomingCall', call);
+      this.onCallActionConnection("incomingCall", call);
       if (!this.activeCall) {
         this.playRing();
       }
     } else {
       this.activeCall = call;
-      this.onCallActionConnection('outgoingCall', call);
+      this.onCallActionConnection("outgoingCall", call);
       this.connectAudio();
     }
     const defaultCallEventsToHandle = [
-      'peerconnection',
-      'connecting',
-      'sending',
-      'progress',
-      'accepted',
-      'newDTMF',
-      'newInfo',
-      'hold',
-      'unhold',
-      'muted',
-      'unmuted',
-      'reinvite',
-      'update',
-      'refer',
-      'replaces',
-      'sdp',
-      'icecandidate',
-      'getusermediafailed',
-      'ended',
-      'failed',
-      'connecting',
-      'confirmed'
+      "peerconnection",
+      "connecting",
+      "sending",
+      "progress",
+      "accepted",
+      "newDTMF",
+      "newInfo",
+      "hold",
+      "unhold",
+      "muted",
+      "unmuted",
+      "reinvite",
+      "update",
+      "refer",
+      "replaces",
+      "sdp",
+      "icecandidate",
+      "getusermediafailed",
+      "ended",
+      "failed",
+      "connecting",
+      "confirmed",
     ];
     _.forEach(defaultCallEventsToHandle, (eventType) => {
       call.on(eventType, (data, cause) => {
@@ -194,16 +194,16 @@ function CallsFlowControl() {
   this.init = () => {
     try {
       this.phone = new UA(this.config);
-      this.phone.on('newRTCSession', this.handleNewRTCSession.bind(this));
+      this.phone.on("newRTCSession", this.handleNewRTCSession.bind(this));
       const binds = [
-        'connected',
-        'disconnected',
-        'registered',
-        'unregistered',
-        'registrationFailed',
-        'invite',
-        'message',
-        'connecting'
+        "connected",
+        "disconnected",
+        "registered",
+        "unregistered",
+        "registrationFailed",
+        "invite",
+        "message",
+        "connecting",
       ];
       _.forEach(binds, (value) => {
         this.phone.on(value, (e) => {
@@ -218,34 +218,34 @@ function CallsFlowControl() {
 
   this.call = (to) => {
     if (!this.connectedPhone) {
-      this.notify('Please connect to Voip Server in order to make calls');
-      console.log('User agent not registered yet');
+      this.notify("Please connect to Voip Server in order to make calls");
+      console.log("User agent not registered yet");
       return;
     }
     if (this.activeCall) {
-      this.notify('Already have an active call');
-      console.log('Already has active call');
+      this.notify("Already have an active call");
+      console.log("Already has active call");
       return;
     }
     this.phone.call(`sip:${to}@${this.config.domain}`, {
-      extraHeaders: ['First: first', 'Second: second'],
+      extraHeaders: ["First: first", "Second: second"],
       RTCConstraints: {
-        optional: [{ DtlsSrtpKeyAgreement: 'true' }]
+        optional: [{ DtlsSrtpKeyAgreement: "true" }],
       },
       mediaConstraints: {
-        audio: true
+        audio: true,
       },
-      sessionTimersExpires: 600
+      sessionTimersExpires: 600,
     });
   };
 
   this.answer = (sessionId) => {
     if (this.activeCall) {
-      this.notify('Already have an active call');
-      console.log('Already has active call');
+      this.notify("Already have an active call");
+      console.log("Already has active call");
     } else if (this.activeChanel.inCall) {
-      this.notify('Current chanel is busy');
-      console.log('Chanel is Busy');
+      this.notify("Current chanel is busy");
+      console.log("Chanel is Busy");
     } else {
       // Stop the annoying ring ring
       this.stopRing();
@@ -256,8 +256,8 @@ function CallsFlowControl() {
         this.activeCall.customPayload = this.activeChanel.id;
         this.activeCall.answer({
           mediaConstraints: {
-            audio: true
-          }
+            audio: true,
+          },
         });
 
         // Connect Audio
@@ -271,19 +271,19 @@ function CallsFlowControl() {
       this.phone._sessions[e].terminate();
     } catch (e) {
       console.log(e);
-      console.log('Call already terminated');
+      console.log("Call already terminated");
     }
   };
 
   this.start = () => {
     if (!this.initiated) {
-      this.notify('Error: 356 Please report');
-      console.log('Please call .init() before connect');
+      this.notify("Error: 356 Please report");
+      console.log("Please call .init() before connect");
       return;
     }
 
     if (this.config.debug) {
-      debug.enable('JsSIP:*');
+      debug.enable("JsSIP:*");
     } else {
       debug.disable();
     }

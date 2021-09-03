@@ -119,13 +119,13 @@ function SwipeCaruselBodyBlock({
           <Tab
             className={classes.tabs}
             icon={<SettingsIcon />}
-            label="Settings"
+            label="Настройки"
             {...a11yProps(0)}
           />
           <Tab
             className={classes.tabs}
             icon={<HistoryIcon />}
-            label="History"
+            label="История звонков"
             {...a11yProps(1)}
           />
         </Tabs>
@@ -143,7 +143,7 @@ function SwipeCaruselBodyBlock({
       </TabPanel>
       <TabPanel value={value} index={1}>
         {calls.length === 0 ? (
-          "No Calls"
+          "Не было звонков"
         ) : (
           <List className={classes.root} subheader={<li />}>
             {calls.map(({ sessionId, direction, number, time, status }) => (

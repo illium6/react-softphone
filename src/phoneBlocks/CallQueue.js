@@ -52,7 +52,7 @@ function CallQueue({ calls, handleAnswer, handleReject }) {
                   bgcolor="background.paper"
                 >
                   <Typography variant="caption" gutterBottom>
-                    Caller:
+                    Вызывающий:
                     {parsedCaller[0]}
                   </Typography>
                 </Box>
@@ -67,7 +67,7 @@ function CallQueue({ calls, handleAnswer, handleReject }) {
                   bgcolor="background.paper"
                 >
                   <Typography variant="caption" gutterBottom>
-                    Jurisdiction:
+                    Юрисдикция:
                     {parsedCaller[1]}
                   </Typography>
                 </Box>
@@ -82,7 +82,7 @@ function CallQueue({ calls, handleAnswer, handleReject }) {
                   bgcolor="background.paper"
                 >
                   <Typography variant="caption" gutterBottom>
-                    To Number:
+                    Звонок:
                     {parsedCaller[2]}
                   </Typography>
                 </Box>
@@ -101,7 +101,7 @@ function CallQueue({ calls, handleAnswer, handleReject }) {
                   value={call.sessionId}
                   className={classes.answer}
                 >
-                  Answer
+                  Ответить
                 </Button>
               </div>
             </Grid>
@@ -115,7 +115,7 @@ function CallQueue({ calls, handleAnswer, handleReject }) {
                   value={call.sessionId}
                   className={classes.reject}
                 >
-                  Reject
+                  Сбросить
                 </Button>
               </div>
             </Grid>

@@ -95,7 +95,7 @@ function KeypadBlock({
           <Grid container spacing={0} className={classes.gridRaw}>
             <Grid item xs={3}>
               <Grid item xs={12}>
-                <Tooltip title="Mute mic" aria-label="add">
+                <Tooltip title="Заглушить" aria-label="add">
                   <div>
                     <Fab
                       disabled={!inCall}
@@ -118,7 +118,10 @@ function KeypadBlock({
               </Grid>
             </Grid>
             <Grid item xs={3}>
-              <Tooltip title={hold ? "Resume" : "Hold"} aria-label="add">
+              <Tooltip
+                title={hold ? "Возобновить" : "Удержание"}
+                aria-label="add"
+              >
                 <div>
                   {" "}
                   <Fab
@@ -136,7 +139,7 @@ function KeypadBlock({
               </Tooltip>
             </Grid>
             <Grid item xs={3}>
-              <Tooltip title="Transfer Call" aria-label="add">
+              <Tooltip title="Перевести звонок" aria-label="add">
                 <span>
                   <Fab
                     disabled={
@@ -153,7 +156,7 @@ function KeypadBlock({
               </Tooltip>
             </Grid>
             <Grid item xs={3}>
-              <Tooltip title="Attended Transfer" aria-label="add">
+              <Tooltip title="Сопровождаемый перевод " aria-label="add">
                 <span>
                   <Fab
                     disabled={!inCall || !inAnswer || hold || !allowTransfer}
