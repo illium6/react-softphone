@@ -8,16 +8,16 @@ import {
   Tab,
   Tabs,
   Typography,
-} from "@material-ui/core";
+} from "@mui/material";
 
-import { makeStyles } from "@material-ui/styles";
+import { makeStyles } from "@mui/styles";
 
 import {
   CallMade as CallMadeIcon,
   CallReceived as CallReceivedIcon,
   History as HistoryIcon,
   Settings as SettingsIcon,
-} from "@material-ui/icons";
+} from "@mui/icons-material";
 
 import { DateTime } from "luxon";
 import PropTypes from "prop-types";

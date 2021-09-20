@@ -1,10 +1,4 @@
-import {
-  Fab,
-  FormControlLabel,
-  Grid,
-  Switch,
-  Tooltip,
-} from "@material-ui/core";
+import { Fab, FormControlLabel, Grid, Switch, Tooltip } from "@mui/material";
 import {
   Call,
   CallEnd,
@@ -18,9 +12,9 @@ import {
   Settings,
   SwapCalls,
   Transform,
-} from "@material-ui/icons";
+} from "@mui/icons-material";
 import React from "react";
-import { makeStyles } from "@material-ui/styles";
+import { makeStyles } from "@mui/styles";
 import PropTypes from "prop-types";
 
 const useStyles = makeStyles((theme) => ({

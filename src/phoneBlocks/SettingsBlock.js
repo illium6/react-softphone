@@ -1,11 +1,11 @@
 import React from "react";
-import { makeStyles } from "@material-ui/styles";
+import { makeStyles } from "@mui/styles";
 import {
   NotificationsActive,
   NotificationsOff,
   VolumeOff,
   VolumeUp,
-} from "@material-ui/icons";
+} from "@mui/icons-material";
 import {
   CircularProgress,
   FormControl,
@@ -14,7 +14,7 @@ import {
   Grid,
   Slider,
   Switch,
-} from "@material-ui/core";
+} from "@mui/material";
 import PropTypes from "prop-types";
 
 const useStyles = makeStyles(() => ({

@@ -1,8 +1,8 @@
 import React, { createRef, useEffect, useState } from "react";
-import { Divider, Drawer, Snackbar, TextField } from "@material-ui/core";
-import { makeStyles } from "@material-ui/styles";
+import { Divider, Drawer, Snackbar, TextField } from "@mui/material";
+import { makeStyles } from "@mui/styles";
 import _ from "lodash";
-import MuiAlert from "@material-ui/lab/Alert";
+import MuiAlert from "@mui/lab/Alert";
 import PropTypes from "prop-types";
 import Page from "./phoneBlocks/Page";
 import KeypadBlock from "./phoneBlocks/KeypadBlock";
