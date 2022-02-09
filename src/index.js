@@ -195,7 +195,10 @@ function SoftPhone({
       message,
     }));
   };
-  Notification.requestPermission();
+
+  if (document.location.protocol === "https:") {
+    Notification.requestPermission().then((r) => {});
+  }
 
   const handleClose = (event, reason) => {
     if (reason === "clickaway") {
@@ -713,7 +716,7 @@ function SoftPhone({
       ringer.current.volume = parseInt(localStatePhone.ringVolume, 10) / 100;
       flowRoute.ringer = ringer;
     } catch (e) {}
-  }, []);
+  }, []); // DO NOT TOUCH DEPENDENCIES
 
   useEffect(() => {
     drawerSetOpen(props.phoneState);
